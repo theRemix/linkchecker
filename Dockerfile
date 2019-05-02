@@ -2,7 +2,7 @@ FROM python:alpine
 
 LABEL maintainer="Jon Borgonia <jon@gomagames.com>"
 
-RUN pip install requests bs4
+RUN pip install requests bs4 texttable
 
 WORKDIR /app
 
