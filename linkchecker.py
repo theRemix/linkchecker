@@ -28,10 +28,12 @@ def recursivelyCheckLinks(link):
     soup = BeautifulSoup(res.text, "html.parser")
 
     for link in soup.find_all("a"):
-        l = link.get("href").split('#')[0]
-        checkLink = domain + l
-        if checkLink not in links and checkLink not in omit and l.startswith('/'):
-            recursivelyCheckLinks(checkLink)
+        l = link.get("href")
+        if l != None:
+            l = l.split('#')[0]
+            checkLink = domain + l
+            if checkLink not in links and checkLink not in omit and l.startswith('/'):
+                recursivelyCheckLinks(checkLink)
 
 recursivelyCheckLinks(domain)
 
