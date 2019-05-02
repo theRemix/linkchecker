@@ -8,6 +8,13 @@ from texttable import Texttable
 domain = sys.argv[-1]
 omit = {'/','#'}
 links = {}
+colors = {
+    'reset': '\033[0m',
+    'red': '\033[31m'
+}
+
+def color(text, c):
+    return "{c}{text}{r}".format(c=colors[c], text=text, r=colors['reset'])
 
 print("checking links in {}".format(domain))
 
@@ -30,12 +37,20 @@ recursivelyCheckLinks(domain)
 
 table = Texttable()
 table.set_deco(Texttable.HEADER)
-table.set_cols_dtype(['t','i',])
+table.set_cols_dtype(['t','t',])
 table.set_cols_align(["l", "r"])
 
-
-for link in links:
-    table.add_row([link.replace(domain,''), links[link]])
+for link in filter(lambda l: l != '', links):
+    label = link.replace(domain,'')
+    status = links[link]
+    statusLabel = str(links[link])
+    if status >= 400:
+        label += " ❌"
+        statusLabel = color(statusLabel, 'red')
+    table.add_row([
+        label,
+        statusLabel
+    ])
 
 print(table.draw())
 
